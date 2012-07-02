@@ -484,6 +484,13 @@ int luaopen_libusb(lua_State *L) {
 	push_integer_global(L, USB_DT_PHYSICAL,"USB_DT_PHYSICAL");
 	push_integer_global(L, USB_DT_HUB,"USB_DT_HUB");
 
+	push_integer_global(L, USB_TYPE_VENDOR, "USB_TYPE_VENDOR");
+	push_integer_global(L, USB_RECIP_DEVICE, "USB_RECIP_DEVICE");
+	push_integer_global(L, USB_ENDPOINT_IN, "USB_ENDPOINT_IN");
+	push_integer_global(L, USB_ENDPOINT_OUT, "USB_ENDPOINT_OUT");
+
+	
+
 	push_integer_global(L, USB_DT_DEVICE_SIZE,"USB_DT_DEVICE_SIZE");
 	push_integer_global(L, USB_DT_CONFIG_SIZE,"USB_DT_CONFIG_SIZE");
 	push_integer_global(L, USB_DT_INTERFACE_SIZE,"USB_DT_INTERFACE_SIZE");
