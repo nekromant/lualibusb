@@ -12,7 +12,7 @@ find_package ( LibUSB REQUIRED )
 include_directories ( ${LibUSB_INCLUDE_DIR} )
 
 # Build
-install_lua_module ( libusb lualibusb.c LINK ${LibUSB_LIBRARIES} )
+#install_lua_module ( libusb lualibusb.c LINK ${LibUSB_LIBRARIES} )
 install_data ( COPYRIGHT README )
 install_test ( test.lua )
 

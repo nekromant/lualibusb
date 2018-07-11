@@ -239,23 +239,35 @@ static int l_usb_control_msg(lua_State *L) {
 	int index = lua_tonumber(L, 5);
 	const char *bytes = lua_tostring (L, 6);
 	int size = lua_strlen (L, 6);
+
+	char *target;
+
+	if (requesttype & 0x80) {
+		size = lua_tonumber(L, 6);
+		target = malloc(size);
+	} else {
+		target = malloc(size);
+		memcpy(target, bytes, size);
+	}
 	int timeout = lua_tonumber(L, 7);
 	
 	//make a copy just in case (why it isn't const?)
-	char *bytes_copy=(char*)malloc(size);
-	memcpy(bytes_copy, bytes, size);
 	
 	int ret = usb_control_msg(dev_handle, requesttype, request, 
-							value, index, bytes_copy, size, timeout);	
+							value, index, target, size, timeout);	
 	
 	if( ret < 0 ) {
 		lua_pushnil (L);
 		lua_pushnumber (L, ret);
-		return 2; /* number of results */   
+		ret = 2; /* number of results */   
 	} else{
-		lua_pushlstring (L, bytes_copy, ret);
-		return 1; /* number of results */   
+		lua_pushlstring (L, target, ret);
+		ret = 1; /* number of results */   
 	}
+
+	free(target);
+
+	return ret;
 }
 
 static int l_usb_get_string_simple(lua_State *L) {
@@ -271,11 +283,13 @@ static int l_usb_get_string_simple(lua_State *L) {
 	if( ret < 0 ) {
 		lua_pushnil (L);
 		lua_pushnumber (L, ret);
-		return 2; /* number of results */   
+		ret = 2; /* number of results */   
 	} else{
 		lua_pushlstring (L, buf, ret);
-		return 1; /* number of results */   
+		ret = 1; /* number of results */   
 	}
+	free(buf);
+	return ret;
 }
 
 static int l_usb_bulk_write(lua_State *L) {
@@ -392,11 +406,13 @@ static int l_usb_get_descriptor_by_endpoint(lua_State *L) {
 	if( ret < 0 ) {
 		lua_pushnil (L);
 		lua_pushnumber (L, ret);
-		return 2; /* number of results */   
+		ret = 2; /* number of results */   
 	} else{
 		lua_pushlstring (L, buf, ret);
-		return 1; /* number of results */   
+		ret = 1; /* number of results */   
 	}
+	free(buf);
+	return ret;
 }
 
 static const struct luaL_reg libusb [] = {

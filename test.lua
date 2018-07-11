@@ -8,7 +8,7 @@ License at file end.
 ]]
 
 
-assert(package.loadlib("Debug/libluausb.so","luaopen_libusb"))()
+assert(package.loadlib("luausb.so","luaopen_libusb"))()
 
 --libusb.find_busses()
 --libusb.find_devices()
